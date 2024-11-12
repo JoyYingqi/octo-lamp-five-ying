@@ -24,6 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
+    startCountdown(timeLimit, display);
   });
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
@@ -122,7 +123,7 @@ window.addEventListener('DOMContentLoaded', () => {
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
-      display.textContent = `Time Remaining: ${minutes}:${seconds}`;
+      display.textContent = `${minutes}:${seconds}`;
 
       if (--timer < 0) {
         clearInterval(countdown);
