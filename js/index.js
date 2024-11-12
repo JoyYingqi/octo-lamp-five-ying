@@ -44,8 +44,19 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+     // Ying - 3 - Adding two more questions
+     {
+      q: 'Which is the largest animal on Earth?',
+      o: ['African Elephent', 'Sperm Whale', 'Blue Whale', 'Giraffe'],
+      a: 2, // Blue Whale
+    },
+    {
+      q: 'Which is the largest planet in space',
+      o: ['Jupiter', 'Saturn', 'Uranus', 'Neptune'],
+      a: 0, // Jupiter
+    },
   ];
-
+ 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
     const quizWrap = document.querySelector('#quizWrap');
@@ -71,20 +82,58 @@ window.addEventListener('DOMContentLoaded', () => {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
-        liElement = document.querySelector('#' + li);
-        radioElement = document.querySelector('#' + r);
+        let liElement = document.querySelector('#' + li);
+        let radioElement = document.querySelector('#' + r);
 
         if (quizItem.a == i) {
           //change background color of li element here
+          liElement.style.backgroundColor = '#40DBC4';
         }
 
-        if (radioElement.checked) {
+        if (radioElement.checked && i == quizItem.a) {
           // code for task 1 goes here
+          score++;
         }
       }
     });
+    document.querySelector('#score').innerText = `Your score: ${score} / ${quizArray.length}`;
   };
 
+  // Ying - 2 - Add an Event listener for the submit button
+  const submitButton = document.querySelector('#btnSubmit');
+  submitButton.addEventListener('click', calculateScore);
+
+  // Ying - 4 - Reload the page when the reset button is clicked
+  const resetButton = document.querySelector('#btnReset');
+  resetButton.addEventListener('click', () => {
+    window.location.reload();
+  });
+
+  // Ying - 5 - Add a countdown timer
+  const timeLimit = 60; 
+  const display = document.querySelector('#timer');
+
+  const startCountdown = (duration, display) => {
+    let timer = duration, minutes, seconds;
+    const countdown = setInterval(() => {
+      minutes = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
+
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      display.textContent = `Time Remaining: ${minutes}:${seconds}`;
+
+      if (--timer < 0) {
+        clearInterval(countdown);
+        calculateScore(); 
+        document.querySelector('#btnSubmit').disabled = true;
+        alert("Time's up! Your quiz has ended.");
+      }
+    }, 1000);
+  };
+  
   // call the displayQuiz function
   displayQuiz();
 });
+
